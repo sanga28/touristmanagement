@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Management</title>
+    <style>
+        body {
+            font-family: sans-serif; 
+            background-color: #000000; 
+            color: #FFFFFF; 
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 30px;
+        }
+        .container {
+            background-color: #000000; 
+            padding: 30px;
+            border-radius: 0;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); 
+            width: 95%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+            gap: 20px;
+        }
+        .app-card {
+            background-color: #000000; 
+            padding: 20px;
+            border: 1px solid #444444; 
+            border-radius: 0;
+        }
+        h1 {
+            color: #FFFFFF;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2em;
+            text-transform: uppercase;
+            grid-column: 1 / -1; 
+        }
+        h2 {
+            color: #FFFFFF;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        label {
+            color: #CCCCCC;
+            display: block;
+            margin-bottom: 5px;
+        }
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #444444;
+            background-color: #222222; 
+            color: #00FF00; 
+            border-radius: 0;
+            box-sizing: border-box;
+            resize: vertical;
+            font-size: 14px;
+        }
+        button {
+            background-color: #333333; 
+            color: #FFFFFF;
+            padding: 12px 20px;
+            border: 1px solid #666666; 
+            border-radius: 0;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.1s, color 0.1s;
+        }
+        button:hover {
+            background-color: #FFFFFF;
+            color: #000000;
+        }
+        .output {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #444444;
+            border-radius: 0;
+            background-color: #111111;
+            min-height: 50px;
+        }
+        .output p {
+            margin: 5px 0;
+            color: #CCCCCC;
+            white-space: pre-wrap; 
+        }
+        strong {
+            color: #FFFFFF; 
+        }
+        .error {
+            color: #FF0000; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tour Manager</h1>
+
+        <div class="app-card">
+            <h2>Trip Planner</h2>
+            <label for="queryInput">Travel Query Input:</label>
+            <textarea id="queryInput" rows="3" placeholder="e.g., Suggest a trip to Paris, then to London, visiting historical sites."></textarea>
+            <button onclick="processTripQuery()">PLAN ROUTE</button>
+            <div class="output" id="outputTrip">
+                <p><strong>Status:</strong> <span class="error">Awaiting command...</span></p>
+            </div>
+        </div>
+
+        <div class="app-card">
+            <h2>Hotel Management</h2>
+            <label for="codeInput">Enter document (e.g., JSON, PDF):</label>
+            <textarea id="codeInput" rows="3" placeholder="Paste your trip info here..."></textarea>
+            <button onclick="hotelManage()">SUBMIT</button>
+            <div class="output" id="outputCode">
+                <p><strong>Status:</strong> <span class="error">Awaiting command...</span></p>
+            </div>
+        </div>
+
+        <div class="app-card">
+            <h2>Price Management</h2>
+            <label for="calcInput">Expression (e.g., 5 * (10 + 2) / 3):</label>
+            <input type="text" id="calcInput" placeholder="Enter mathematical expression">
+            <button onclick="calculatePrice()">CALCULATE</button>
+            <div class="output" id="outputCalc">
+                <p><strong>Status:</strong> <span class="error">Awaiting command...</span></p>
+            </div>
+        </div>
+
+        <div class="app-card">
+            <h2>Creating Budget</h2>
+            <label for="converterInput">Calculte:</label>
+            <input type="text" id="converterInput" placeholder="Enter a value to customise budget">
+            <button onclick="createBudget()">ENTER</button>
+            <div class="output" id="outputConvert">
+                <p><strong>Status:</strong> <span class="error">Awaiting command...</span></p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+    function processTripQuery() {
+        const query = document.getElementById('queryInput').value;
+        const outputArea = document.getElementById('outputTrip');
+        const message = query ? 
+            `Query received: ${query.substring(0, 30)}...` : 
+            "No input provided.";
+            
+        const statusColor = query ? "#00FF00" : "#FF0000";
+
+        outputArea.innerHTML = `<p><strong>Status:</strong> <span style="color: ${statusColor};">Executed.</span></p><p>${message}</p>`;
+    }
+
+    function hotelManage() {
+        const code = document.getElementById('codeInput').value;
+        const outputArea = document.getElementById('outputCode');
+        
+        const length = code.length;
+        const statusColor = length > 0 ? "#00FF00" : "#FF0000";
+        
+        outputArea.innerHTML = `<p><strong>Status:</strong> <span style="color: ${statusColor};">Executed.</span></p><p>Input length: ${length} characters. (No formatting applied)</p>`;
+    }
+
+    function calculatePrice() {
+        const expression = document.getElementById('calcInput').value;
+        const outputArea = document.getElementById('outputCalc');
+    
+        const fixedResult = 42; 
+        const statusColor = expression.trim() ? "#00FF00" : "#FF0000";
+        
+        const message = expression.trim() ? 
+            `Input Expression: "${expression.substring(0, 15)}...". Result: **${fixedResult}**` : 
+            "No expression to calculate. Default result shown.";
+
+        outputArea.innerHTML = `<p><strong>Status:</strong> <span style="color: ${statusColor};">Executed.</span></p><p>${message}</p>`;
+    }
+
+    function createBudget() {
+        const input = document.getElementById('converterInput').value.trim();
+        const outputArea = document.getElementById('outputConvert');
+
+        if (!input) {
+            outputArea.innerHTML = '<p><strong>Status:</strong> <span style="color: #FF0000;">Executed.</span></p><p>No input provided.</p>';
+            return;
+        }
+        const converted = input.split('').reverse().join('');
+        
+        outputArea.innerHTML = `<p><strong>Status:</strong> <span style="color: #00FF00;">Executed.</span></p><p>Original: ${input}</p><p>Converted: **${converted}**</p>`;
+    }
+</script>
+</body>
+</html>
